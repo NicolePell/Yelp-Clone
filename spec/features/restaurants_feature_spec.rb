@@ -27,9 +27,20 @@ describe 'creating restaurants' do
 		visit '/restaurants'
 		click_link 'Add a restaurant'
 		fill_in 'Name', with: "Nando's"
-		click_button 'Create restaurant'
+		click_button 'Create Restaurant'
 		expect(page).to have_content "Nando's"
 		expect(current_path).to eq '/restaurants'
+	end
+
+	context 'an invalid restaurant' do
+		it 'does not let you submit a name that is too short' do
+			visit '/restaurants'
+			click_link 'Add a restaurant'
+			fill_in 'Name', with: 'N'
+			click_button 'Create Restaurant'
+			expect(page).not_to have_css 'h2', text: 'N'
+			expect(page).to have_content 'error'
+		end
 	end
 
 	context 'viewing restaurants' do
