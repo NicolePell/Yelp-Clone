@@ -54,10 +54,23 @@ describe 'creating restaurants' do
 		it 'lets a user edit a restaurant' do
 			visit '/restaurants'
 			click_link "Edit Nando's"
-			fill_in 'Name', with: "Nando's - Portuguese Chicken Restaurant"
+			fill_in 'Name', with: "Nando's Chickenland"
 			click_button 'Update Restaurant'
-			expect(page).to have_content "Nando's - Portuguese Chicken Restaurant"
+			expect(page).to have_content "Nando's Chickenland"
 			expect(current_path).to eq '/restaurants'
 		end
+	end
+end
+
+describe 'deleting restaurants' do
+	before do
+		Restaurant.create(name: "Nando's")
+	end
+
+	it 'removes a restaurant when a user clicks a delete link' do
+		visit '/restaurants'
+		click_link "Delete Nando's"
+		expect(page).not_to have_content "Nando's"
+		expect(page).to have_content 'Restaurant deleted successfully'
 	end
 end
