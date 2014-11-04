@@ -23,6 +23,23 @@ describe 'restaurants' do
 end
 
 describe 'creating restaurants' do
+
+	it 'requires a user to be logged in before creating a restaurant' do
+		visit '/'
+		click_link 'Sign out'
+		click_link 'Add a restaurant'
+		expect(page).to have_content "You need to sign in or sign up before continuing."
+	end
+
+	before do
+		visit('/')
+		click_link('Sign up')
+		fill_in('Email', with: 'test@example.com')
+		fill_in('Password', with: 'testtest')
+		fill_in('Password confirmation', with: 'testtest')
+		click_button('Sign up')
+	end
+
 	it 'prompts user to fill out a form, then displays the new restaurant' do
 		visit '/restaurants'
 		click_link 'Add a restaurant'
@@ -80,9 +97,17 @@ describe 'creating restaurants' do
 end
 
 describe 'deleting restaurants' do
-	before do
+
+		before do
 		Restaurant.create(name: "Nando's")
+		visit('/')
+		click_link('Sign up')
+		fill_in('Email', with: 'test@example.com')
+		fill_in('Password', with: 'testtest')
+		fill_in('Password confirmation', with: 'testtest')
+		click_button('Sign up')
 	end
+	
 
 	it 'removes a restaurant when a user clicks a delete link' do
 		visit '/restaurants'
